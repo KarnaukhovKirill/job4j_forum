@@ -7,16 +7,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.forum.model.Post;
-import ru.job4j.forum.model.User;
+import ru.job4j.forum.service.PostService;
 
 @Controller
 public class PostControl {
+    private final PostService service;
+
+    public PostControl(PostService service) {
+        this.service = service;
+    }
 
     @GetMapping("/post")
     public String getPost(@RequestParam("id") String id, Model model) {
-        /**
-         * todo
-         */
+        var post = service.findPostById(Integer.parseInt(id));
+        model.addAttribute("post", post);
         return "post";
     }
 
@@ -27,19 +31,20 @@ public class PostControl {
 
     @RequestMapping("/savePost")
     public String createPost(@ModelAttribute("post") Post post) {
-        /**
-         * savePost
-         * todo
-         */
+        service.save(post);
         return "redirect:/index";
     }
 
     @RequestMapping("/editPost")
     public String updatePost(@RequestParam("id") String id, Model model) {
-        /**
-         * 1.findPost
-         * 2.sendPost to view
-         * todo
-         */
+        var post = service.findPostById(Integer.parseInt(id));
+        model.addAttribute("post", post);
         return "edit";
-    }}
+    }
+
+    @RequestMapping("/deletePost")
+    public String deletePost(@RequestParam("id") String id) {
+        service.deletePost(Integer.parseInt(id));
+        return "redirect:/index";
+    }
+}

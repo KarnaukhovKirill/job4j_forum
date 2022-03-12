@@ -25,19 +25,21 @@
 
 <body>
 <div class="container mt-3">
-    <div class="row">
+    <div class="row" style="margin-left: 0px; margin-right: 0px">
         <h4>Форум job4j</h4>
     </div>
     <div class="float-right">
         <ul class="nav-list">
-            <li class="nav-item"><a href="/postForm" class="nav-link">Создать тему</a></li>
             <li class="nav-item"><a href="/logout" class="nav-link">${user.username} | Выход</a></li>
         </ul>
     </div>
     <div class="row">
+        <h6>Новая тема обсуждения</h6>
+    </div>
+    <div class="row">
         <form action="/savePost" method="post">
                 <div class="form-group">
-                    <label for="name">Имя</label>
+                    <label for="name">Название</label>
                     <input type="text" class="form-control" id="name" name="name">
                 </div>
                 <div class="form-group">
