@@ -1,17 +1,36 @@
 package ru.job4j.forum.model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 
-    public static User of(String username, String password) {
+    public static User of(String username, String password, Authority authority) {
         User user = new User();
         user.username = username;
         user.password = password;
+        user.authority = authority;
         return user;
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 
     public int getId() {
@@ -36,6 +55,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Post> getPosts() {
+        return new ArrayList<>(posts);
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = new ArrayList<>(posts);
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     @Override

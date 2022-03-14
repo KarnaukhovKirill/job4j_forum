@@ -1,13 +1,23 @@
 package ru.job4j.forum.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "posts")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User user;
     private String description;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date created;
 
     public static Post of(String name, User user, String description) {

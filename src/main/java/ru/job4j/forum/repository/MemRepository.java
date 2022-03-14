@@ -1,6 +1,7 @@
 package ru.job4j.forum.repository;
 
 import org.springframework.stereotype.Repository;
+import ru.job4j.forum.model.Authority;
 import ru.job4j.forum.model.Post;
 import ru.job4j.forum.model.User;
 import java.util.ArrayList;
@@ -18,19 +19,22 @@ public class MemRepository {
     private AtomicInteger userId = new AtomicInteger(-1);
 
     public MemRepository() {
-        User admin = User.of("Admin", "admin");
-        User user = User.of("Ivan", "123");
-        User user1 = User.of("Diana", "123");
+        Authority admin = Authority.of("ADMIN");
+        Authority user = Authority.of(("USER"));
 
-        users.put(userId.incrementAndGet(), admin);
-        users.put(userId.incrementAndGet(), user);
+        User adminUser = User.of("Admin", "admin", admin);
+        User user0 = User.of("Ivan", "123", user);
+        User user1 = User.of("Diana", "123", user);
+
+        users.put(userId.incrementAndGet(), adminUser);
+        users.put(userId.incrementAndGet(), user0);
         users.put(userId.incrementAndGet(), user1);
 
-        var firstPost = Post.of("Продам машину лада седан", user, "Не бита не крашена");
+        var firstPost = Post.of("Продам машину лада седан", user0, "Не бита не крашена");
         firstPost.setId(postId.incrementAndGet());
         var secondPost = Post.of("Отдам щенка в хорошие руки", user1, "Дворняжка, кабель");
         secondPost.setId(postId.incrementAndGet());
-        var thirdPost = Post.of("Продам гараж", user, "Как раз для лады седан");
+        var thirdPost = Post.of("Продам гараж", user0, "Как раз для лады седан");
         thirdPost.setId(postId.incrementAndGet());
 
         posts.put(firstPost.getId(), firstPost);
