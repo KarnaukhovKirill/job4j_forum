@@ -30,7 +30,7 @@
     </div>
     <div class="float-right">
         <ul class="nav-list">
-            <li class="nav-item"><a href="/postForm" class="nav-link">Создать тему</a></li>
+            <li class="nav-item"><a href="/createPost" class="nav-link">Создать тему</a></li>
             <li class="nav-item"><a href="/logout" class="nav-link">${user.username} | Выход</a></li>
         </ul>
     </div>

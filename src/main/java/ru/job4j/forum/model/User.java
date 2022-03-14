@@ -17,6 +17,7 @@ public class User {
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
+    private boolean enabled;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "authority_id")
     private Authority authority;
@@ -71,6 +72,14 @@ public class User {
 
     public void setAuthority(Authority authority) {
         this.authority = authority;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

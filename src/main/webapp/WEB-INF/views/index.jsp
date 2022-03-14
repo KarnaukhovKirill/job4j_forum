@@ -42,13 +42,24 @@
             </tr>
             </thead>
             <tbody>
-
                 <c:forEach items="${posts}" var="post">
+                    <c:url var="updateButton" value="/editPost">
+                        <c:param name="postId" value="${post.id}"/>
+                    </c:url>
+                    <c:url var="deleteBotton" value="/deletePost">
+                        <c:param name="postId" value="${post.id}"/>
+                    </c:url>
                         <tr>
                             <td><a href="/post?id=${post.id}"><c:out value="${post.name}"/></a></td>
                             <td><c:out value="${post.user.username}"/></td>
                             <td><c:out value="${post.description}"/></td>
                             <td><c:out value="${post.created}"/></td>
+                            <td>
+                                <input type="button" value="update" onclick="window.location.href='${updateButton}'">
+                                <c:if test="${user.username == post.user.username}">
+                                    <input type="button" value="delete" onclick="window.location.href='${deleteBotton}'">
+                                </c:if>
+                            </td>
                         </tr>
                 </c:forEach>
             </tbody>

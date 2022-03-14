@@ -10,6 +10,7 @@ create table users (
     id serial primary key,
     username varchar(255) not null unique,
     password varchar(255) not null,
+    enabled boolean not null default true,
     authority_id int references authorities(id)
 );
 
