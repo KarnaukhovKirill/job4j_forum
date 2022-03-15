@@ -9,9 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.forum.Main;
-import ru.job4j.forum.model.User;
+import ru.job4j.forum.model.Post;
 import ru.job4j.forum.service.PostService;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = Main.class)
 @AutoConfigureMockMvc
-public class RegControlTest {
+public class PostControlTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -32,23 +31,41 @@ public class RegControlTest {
 
     @Test
     @WithMockUser
-    public void getRegPageReturnReg() throws Exception {
-        this.mockMvc.perform(get("/reg"))
+    public void createPostReturnEdit() throws Exception {
+        this.mockMvc.perform(post("/savePost")
+                        .param("id", "0")
+                        .flashAttr("post", Post.of("NewPost", null, "Desc")))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("reg"));
+                .andExpect(status().is3xxRedirection());
+        ArgumentCaptor<Post> argument = ArgumentCaptor.forClass(Post.class);
+        verify(postService).save(argument.capture());
+        assertThat(argument.getValue().getName(), is("NewPost"));
     }
 
     @Test
     @WithMockUser
-    public void saveUser() throws Exception {
-        this.mockMvc.perform(post("/reg")
-                        .param("username","User")
-                        .param("password", "123"))
+    public void getPostReturnPost() throws Exception {
+        this.mockMvc.perform(get("/post?id=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("post"));
+    }
+
+    @Test
+    @WithMockUser
+    public void editPostReturnEdit() throws Exception {
+        this.mockMvc.perform(get("/editPost?postId=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("edit"));
+    }
+
+    @Test
+    @WithMockUser
+    public void deletePost() throws Exception {
+        this.mockMvc.perform(get("/deletePost")
+                        .param("postId", "1"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
-        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
-        verify(postService).add(argument.capture());
-        assertThat(argument.getValue().getUsername(), is("User"));
     }
 }
