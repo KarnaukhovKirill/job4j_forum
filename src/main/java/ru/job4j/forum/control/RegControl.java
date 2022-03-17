@@ -13,7 +13,7 @@ import ru.job4j.forum.service.PostService;
 @Controller
 public class RegControl {
     @Autowired
-    private PasswordEncoder encoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private PostService service;
 
@@ -26,7 +26,7 @@ public class RegControl {
             return "reg";
         } else {
             user.setEnabled(true);
-            user.setPassword(encoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setAuthority(service.findByAuthority("ROLE_USER"));
             service.add(user);
             return "redirect:/login?reg=true";
