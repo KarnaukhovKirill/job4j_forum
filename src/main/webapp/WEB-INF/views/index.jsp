@@ -55,8 +55,8 @@
                             <td><c:out value="${post.description}"/></td>
                             <td><c:out value="${post.created}"/></td>
                             <td>
-                                <input type="button" value="update" onclick="window.location.href='${updateButton}'">
                                 <c:if test="${user.username == post.user.username}">
+                                    <input type="button" value="update" onclick="window.location.href='${updateButton}'">
                                     <input type="button" value="delete" onclick="window.location.href='${deleteBotton}'">
                                 </c:if>
                             </td>
