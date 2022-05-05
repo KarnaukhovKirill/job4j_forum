@@ -12,7 +12,7 @@
   <groupId>ru.job4j</groupId>
   <artifactId>forum</artifactId>
   <version>1</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>job4j-forum</name>
 
